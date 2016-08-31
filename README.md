@@ -16,7 +16,7 @@ pip install -r requirements.txt
 ```
 Obtain a [slack token](https://api.slack.com/docs/oauth-test-tokens). Then, create a config file - this should be kept hidden! In the current directory, enter the following:
 ```
-echo "SLACK_TOKEN='your-token-here'" >> config.py
+echo "SLACK_TOKEN='your-token-here'" >> creds.py
 ```
 Don't forget to replace the string above with your own slack token. When that is done, open `settings.py` and update it with your information.
 ```python
