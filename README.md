@@ -10,9 +10,20 @@ Grab your local copy.
 ```
 git clone https://github.com/thisisandreeeee/stalk-the-DMV.git
 ```
-Install the dependencies.
+Install the dependencies, which includes python libraries and phantomjs.
 ```
 pip install -r requirements.txt
+
+# On OSX
+brew install phantomjs
+
+# On Linux
+cd ~
+export PHANTOM_JS="phantomjs-1.9.8-linux-x86_64"
+wget https://bitbucket.org/ariya/phantomjs/downloads/$PHANTOM_JS.tar.bz2
+sudo tar xvjf $PHANTOM_JS.tar.bz2
+sudo mv $PHANTOM_JS /usr/local/share
+sudo ln -sf /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/local/bin
 ```
 Obtain a [slack token](https://api.slack.com/docs/oauth-test-tokens). Then, create a config file - this should be kept hidden! In the current directory, enter the following:
 ```
