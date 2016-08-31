@@ -8,6 +8,7 @@ class Scraper:
         # browser = webdriver.Chrome('./chromedriver')
         browser.get(URL)
         self.browser = browser
+        time.sleep(2)
 
     def i_want_an_appointment_at(self, office_id):
         browser = self.form_fill_and_submit(self.browser, office_id)
