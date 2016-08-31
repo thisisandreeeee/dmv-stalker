@@ -1,4 +1,5 @@
 *.log
+chromedriver
 .DS_Store
 creds.py
 __pycache__/
