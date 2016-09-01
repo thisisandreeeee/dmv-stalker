@@ -1,8 +1,10 @@
 import sqlite3
 from datetime import datetime
+from logger import Logger
 
 class DB:
     def __init__(self):
+        self.logger = Logger()
         self.db = sqlite3.connect('dmv_db')
         self.cur = self.db.cursor()
         self.cur.execute('''
@@ -13,16 +15,19 @@ class DB:
     def insert(self, loc, appt_time):
         if not self._is_processed(appt_time):
             appt_time = self._process_dt(appt_time)
+        self.logger.log("Data is being inserted into table: %s (%s)" % (loc, appt_time))
         self.cur.execute('''
             INSERT INTO appointment(location, appt_time) VALUES(?,?)''', (loc, appt_time))
         self.db.commit()
 
     def appt_exists(self, loc, appt_time):
         appt_time = self._process_dt(appt_time)
+        self.logger.log("Checking whether data exists in table: %s (%s)" %(loc, appt_time))
         self.cur.execute('''
             SELECT * FROM appointment WHERE location = ? AND appt_time = ?''', (loc, appt_time))
         rows = self.cur.fetchall()
         if not rows:
+            self.logger.log("Data does not exist in table.")
             self.insert(loc, appt_time)
             return False
         return True
