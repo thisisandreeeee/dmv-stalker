@@ -1,9 +1,13 @@
 import logging
+import os
 from datetime import datetime
 
 class Logger:
     def __init__(self):
-        self.LOG_DEST = "logs/{}.log"
+        LOG_DEST = 'logs/'
+        if not os.path.exists(LOG_DEST):
+            os.makedirs(LOG_DEST)
+        self.LOG_DEST = LOG_DEST + '{}.log'
 
     def _update_config(self):
         curr_date = datetime.now().strftime("%Y%m%d")
