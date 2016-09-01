@@ -1,20 +1,25 @@
 from selenium import webdriver
 from settings import PROFILE, URL
+from logger import Logger
 import time
 
 class Scraper:
     def __init__(self):
+        self.logger = Logger()
+        self.logger.log("New instance of scraper created")
         browser = webdriver.PhantomJS('phantomjs')
         # browser = webdriver.Chrome('./chromedriver')
         browser.get(URL)
         self.browser = browser
-        time.sleep(2)
+        self.logger.log("Navigated to url")
+        time.sleep(5)
 
     def i_want_an_appointment_at(self, office_id):
+        self.logger.log("Start appointment searching process")
         browser = self.form_fill_and_submit(self.browser, office_id)
         browser.switch_to_default_content()
         appt = self.get_appointment(browser)
-        if appt[:5] == 'Sorry':
+        if appt and appt[:5] == 'Sorry':
             return None
         return appt
 
@@ -31,17 +36,23 @@ class Scraper:
         browser.find_element_by_xpath('//*[@id="app_content"]/form/fieldset/table/tbody/tr[16]/td[2]/input[2]').send_keys(PROFILE['tel_suffix1'])
         browser.find_element_by_xpath('//*[@id="app_content"]/form/fieldset/table/tbody/tr[16]/td[2]/input[3]').send_keys(PROFILE['tel_suffix2'])
         browser.find_element_by_xpath('//*[@id="app_content"]/form/table/tbody/tr/td[1]/input[2]').click()
+        self.logger.log("Form filled and submitted for office %s" % office_id)
         return browser
 
     def get_appointment(self, browser):
-        time.sleep(2)
+        time.sleep(5)
         try:
             element = browser.find_element_by_xpath('//*[@id="app_content"]/table/tbody/tr[3]/td[1]/p').get_attribute('innerHTML')
+            self.logger.log("Valid appointment xpath found")
             return element
         except:
+            self.logger.log("No valid appointment xpath found")
             pass
         try:
             element = browser.find_element_by_xpath('//*[@id="app_content"]/table/tbody/tr[2]/td/p').get_attribute('innerHTML')
+            self.logger.log("No available appointments")
+            return element
         except:
+            self.logger.log("Invalid xpath - no element found")
             pass
-        return element
+        return None
