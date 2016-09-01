@@ -4,3 +4,4 @@ chromedriver
 creds.py
 __pycache__/
 *.pyc
+logs/
