@@ -12,9 +12,9 @@ PROFILE = {
     'mm': '09',
     'dd': '28',
     'yyyy': '1993',
-    'dl_number': 'your-dl-number-here',
-    'tel_prefix': 'your-area-code-here',
-    'tel_suffix1': 'your-prefix-here',
-    'tel_suffix2': 'your-line-number-here'
+    'dl_number': 'Y4497779',
+    'tel_prefix': '650',
+    'tel_suffix1': '660',
+    'tel_suffix2': '7970'
     # format: (area-code) prefix - lineNumber
 }
