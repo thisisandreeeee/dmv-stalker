@@ -1,8 +1,9 @@
 from creds import SLACK_TOKEN
-from settings import SLACK_CHANNEL
+from settings import SLACK_CHANNEL, URL
 from slackclient import SlackClient
 from datetime import datetime
 from logger import Logger
+import time
 
 class Bot:
     def __init__(self):
@@ -22,3 +23,29 @@ class Bot:
             username = 'DMV-bot',
             icon_emoji = ':robot_face:')
         self.logger.log("Message sent to %s: %s" % (SLACK_CHANNEL, msg.replace('\n',' ').replace('=','').replace('*','')))
+
+    def listen(self):
+        if self.sc.rtm_connect():
+            while True:
+                command = self._parse_slack_output(self.sc.rtm_read())
+                if command:
+                    self._handle_command(command)
+                time.sleep(1)
+        else:
+            print("Connection failed. Invalid Slack token or bot ID?")
+
+    def _handle_command(self, cmd):
+        self.sc.api_call(
+            "chat.postMessage",
+            channel = SLACK_CHANNEL,
+            text = cmd,
+            username = 'DMV-bot',
+            icon_emoji = ':robot_face:')
+
+    def _parse_slack_output(self, rtm_output):
+        output_list = rtm_output
+        if output_list and len(output_list) > 0:
+            for output in output_list:
+                if output and 'text' in output and 'url' in output['text']:
+                    return URL
+        return None
