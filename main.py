@@ -11,7 +11,7 @@ class App:
         self.db = DB()
         self.logger = Logger()
         self.bot = Bot()
-        self.bot.listen()
+        # self.bot.listen()
 
     def run(self):
         self.logger.log("App start")
@@ -47,6 +47,7 @@ class App:
         return True
 
     def _sleep_till_morning(self):
+        self.logger.log("Is night time, going to sleep now.")
         sleep_in_hours = 8 - datetime.now().hour
         time.sleep(sleep_in_hours * 3600)
 

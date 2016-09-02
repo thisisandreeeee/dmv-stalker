@@ -25,6 +25,7 @@ class Bot:
         self.logger.log("Message sent to %s: %s" % (SLACK_CHANNEL, msg.replace('\n',' ').replace('=','').replace('*','')))
 
     def listen(self):
+        # replace with events API
         if self.sc.rtm_connect():
             self.logger.log("Bot is listening to %s" % SLACK_CHANNEL)
             while True:
@@ -45,7 +46,6 @@ class Bot:
             icon_emoji = ':robot_face:')
 
     def _parse_slack_output(self, rtm_output):
-        self.logger.log("Command received. Processing now.")
         output_list = rtm_output
         if output_list and len(output_list) > 0:
             for output in output_list:
