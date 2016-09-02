@@ -11,6 +11,7 @@ class App:
         self.db = DB()
         self.logger = Logger()
         self.bot = Bot()
+        self.bot.listen()
 
     def run(self):
         self.logger.log("App start")
