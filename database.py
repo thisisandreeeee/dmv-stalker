@@ -1,6 +1,7 @@
 import sqlite3
 from datetime import datetime
 from logger import Logger
+import time
 
 class DB:
     def __init__(self):
@@ -8,16 +9,17 @@ class DB:
         self.db = sqlite3.connect('dmv_db')
         self.cur = self.db.cursor()
         self.cur.execute('''
-            CREATE table IF NOT EXISTS appointment(location TEXT, appt_time TEXT);
+            CREATE table IF NOT EXISTS appointment(ts TEXT, location TEXT, appt_time TEXT);
         ''')
         self.db.commit()
 
     def insert(self, loc, appt_time):
+        ts = datetime.now().strftime("%Y%m%d%H%M%S")
         if not self._is_processed(appt_time):
             appt_time = self._process_dt(appt_time)
         self.logger.log("Data is being inserted into table: %s (%s)" % (loc, appt_time))
         self.cur.execute('''
-            INSERT INTO appointment(location, appt_time) VALUES(?,?)''', (loc, appt_time))
+            INSERT INTO appointment(ts, location, appt_time) VALUES(?,?,?)''', (ts, loc, appt_time))
         self.db.commit()
 
     def appt_exists(self, loc, appt_time):
@@ -30,6 +32,17 @@ class DB:
             self.logger.log("Data does not exist in table.")
             self.insert(loc, appt_time)
             return False
+        else:
+            self.logger.log("Checking if appointment has been recently shown.")
+            all_tdelta = []
+            for row in rows:
+                ts = row[0]
+                date_object = datetime.strptime(ts, "%Y%m%d%H%M%S")
+                diff_seconds = (datetime.now() - date_object).seconds
+                all_tdelta.append(diff_seconds / 60)
+            if min(all_tdelta) <= 30:
+                self.logger.log("Latest appointment was recently shown")
+                return False
         return True
 
     def select_all(self):
