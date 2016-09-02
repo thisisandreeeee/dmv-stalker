@@ -26,10 +26,12 @@ class Bot:
 
     def listen(self):
         if self.sc.rtm_connect():
+            self.logger.log("Bot is listening to %s" % SLACK_CHANNEL)
             while True:
                 command = self._parse_slack_output(self.sc.rtm_read())
                 if command:
                     self._handle_command(command)
+                    self.logger.log("Bot has responded to command")
                 time.sleep(1)
         else:
             print("Connection failed. Invalid Slack token or bot ID?")
@@ -43,9 +45,11 @@ class Bot:
             icon_emoji = ':robot_face:')
 
     def _parse_slack_output(self, rtm_output):
+        self.logger.log("Command received. Processing now.")
         output_list = rtm_output
         if output_list and len(output_list) > 0:
             for output in output_list:
                 if output and 'text' in output and 'url' in output['text']:
+                    self.logger.log("Command identified to be 'url'")
                     return URL
         return None
