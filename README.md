@@ -1,4 +1,6 @@
 # Stalk the DMV
+![demo](https://raw.githubusercontent.com/thisisandreeeee/stalk-the-DMV/master/demo.gif)
+
 A good friend of mine, Juho, casually mentioned how much of a pain it was to get an appointment for a driving test at the DMV. The only available appointments were in 3 months, and although it was possible to secure an earlier appointment if someone else deleted theirs - it was way too tedious (and mundane) to manually check the DMV page ever so often.
 
 Enter, [Selenium](http://selenium-python.readthedocs.io/).
