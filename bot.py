@@ -12,8 +12,12 @@ class Bot:
         self.logger.log("Bot initialized")
 
     def post_message(self, msg):
-        curr_month = datetime.now().strftime('%B')
-        if curr_month in msg:
+        # curr_month = datetime.now().strftime('%B')
+        appt_day, appt_date, appt_time = msg.split('\n')[1].split(', ')
+        appt_month = datetime.strptime(appt_date + ' ' + appt_time.split(' ')[0], "%B %d %Y")
+        tdelta = (appt_month - datetime.now()).days
+
+        if tdelta <= 14:
             self.logger.log("Appointment found for current month")
             msg = "*********************\n" + "<@U1YUJ2FBR> <@U1XU0UF7B>\n" + msg + "\n====================="
         self.sc.api_call(
