@@ -52,7 +52,7 @@ class DB:
         rows = self.cur.fetchall()
         if rows:
             for row in rows:
-                location, dt = row
+                ts, location, dt = row
                 date_object = datetime.strptime(dt, "%Y%m%d%H%M%S")
                 dt_formatted = date_object.strftime('%A, %B %d, %Y at %I:%M %p')
                 print("{}: {}".format(location, dt_formatted))
