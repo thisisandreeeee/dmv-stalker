@@ -60,10 +60,11 @@ python main.py
 ```
 
 ## So what exactly does it do?
-The bot will run once every 15 minutes, provided that the current time is during the day. It checks whether there are any available appointments at the predefined locations, and posts the earliest appointment in the slack channel. 
+The bot will run once every 15 minutes, provided that the current time is during the day. It checks whether there are any available appointments at the predefined locations, and posts the earliest appointment in the slack channel.
 
 ## Cool features
-- If the next appointment is coming up real soon, we want to know ASAP. The bot will recognize when the earliest appointment for a specific DMV office is in the current month, and tag the users within the slack channel to bring the information immediately to attention. All other appointments will still be posted in the slack channel, but users will not be tagged. Although this can be improved to check for appointments that are within X number of days, this program was written at the beginning of the month and I did not foresee my hunt for an appointment extending towards the end of the month - hence there was no need for premature optimization and this hackish solution would suffice.
+- Multithreading implemented that allows the bot to post messages and listen to the slack channel at the same time. It listens for the "url" command, and replies with the relevant DMV signup URL.
+- If the next appointment is coming up real soon, we want to know ASAP. The bot will recognize if the earliest appointment for a specific DMV office is within 14 days, and tag the users within the slack channel to bring the information immediately to attention. All other appointments will still be posted in the slack channel, but users will not be tagged.
 - Everytime a new appointment is found at an office, the data will be stored in an SQLite database if it does not already exist within the database. Then, whenever a bot wishes to send a notification on a new appointment to the channel, it checks the database to ensure that it has not already notified users of an existing appointment.
 - All actions within the script are being logged, which makes it extremely easy to debug in the case that something goes awry.
 - Selenium enables us to mimic the actual action of a human. To view this with a GUI, go to `scraper.py` and swap out the following two lines.
@@ -77,4 +78,3 @@ wget http://chromedriver.storage.googleapis.com/2.23/chromedriver_mac64.zip
 unzip chromedriver_mac64.zip
 rm chromedriver_mac64.zip
 ```
-
