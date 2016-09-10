@@ -25,7 +25,6 @@ class Bot:
         self.logger.log("Message sent to %s: %s" % (SLACK_CHANNEL, msg.replace('\n',' ').replace('=','').replace('*','')))
 
     def listen(self):
-        # replace with events API
         if self.sc.rtm_connect():
             self.logger.log("Bot is listening to %s" % SLACK_CHANNEL)
             while True:

@@ -3,21 +3,24 @@ from settings import LOCATIONS
 from bot import Bot
 from database import DB
 from logger import Logger
-import time
 from datetime import datetime
+import time
+import threading
 
 class App:
     def __init__(self):
         self.db = DB()
         self.logger = Logger()
         self.bot = Bot()
-        # self.bot.listen()
+        self.runner = threading.Thread(target=self.run_once)
+        self.listener = threading.Thread(target=self.bot.listen).start()
 
     def run(self):
         self.logger.log("App start")
         if self._is_daytime():
             self.logger.log("Is daytime, start run_once")
-            self.run_once()
+            self.runner.run()
+            # self.run_once()
             self.logger.log("End run_once")
             time.sleep(900)
         else:
