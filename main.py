@@ -12,15 +12,12 @@ class App:
         self.db = DB()
         self.logger = Logger()
         self.bot = Bot()
-        self.runner = threading.Thread(target=self.run_once)
-        self.listener = threading.Thread(target=self.bot.listen).start()
 
     def run(self):
         self.logger.log("App start")
         if self._is_daytime():
             self.logger.log("Is daytime, start run_once")
-            self.runner.run()
-            # self.run_once()
+            self.run_once()
             self.logger.log("End run_once")
             time.sleep(900)
         else:
