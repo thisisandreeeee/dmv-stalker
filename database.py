@@ -72,7 +72,7 @@ class DB:
         return res
 
     def _process_dt(self, dt):
-        date_object = datetime.strptime(dt, '%A, %B %d, %Y at %I:%M %p')
+        date_object = datetime.strptime(dt.strip(), "%A, %B %d, %Y at %I:%M %p")
         dt = date_object.strftime("%Y%m%d%H%M%S")
         return dt
 
